@@ -14,19 +14,27 @@ namespace ExcelProcessor
     {
         List<Truck> TruckData = new List<Truck>();
         List<String> Alphabet = new List<String>();
+        Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
 
 
         public Form1()
         {           
             Alphabet.Add("A"); Alphabet.Add("B"); Alphabet.Add("C"); Alphabet.Add("D"); Alphabet.Add("E"); Alphabet.Add("F"); Alphabet.Add("G"); Alphabet.Add("H"); Alphabet.Add("I"); Alphabet.Add("J"); Alphabet.Add("K"); Alphabet.Add("L"); Alphabet.Add("M"); Alphabet.Add("N"); Alphabet.Add("O"); Alphabet.Add("P"); Alphabet.Add("Q"); Alphabet.Add("R"); Alphabet.Add("S"); Alphabet.Add("T"); Alphabet.Add("U"); Alphabet.Add("V"); Alphabet.Add("W"); Alphabet.Add("X"); Alphabet.Add("Y"); Alphabet.Add("Z");
 
-            string OutputPath = @"D:\Data\Programming\Visual C#\ExcelProcessor\sample data\example-report\Output.txt";
+            
 
-            string xlsFileBelgien = @"D:\Data\Programming\Visual C#\ExcelProcessor\sample data\truck-data\Belgien 2017 Monatsinfos .xls";
-            string xlsFileEast = @"D:\Data\Programming\Visual C#\ExcelProcessor\sample data\truck-data\EAST 2017 Monatsinfos .xls";
-            string xlsFileWest = @"D:\Data\Programming\Visual C#\ExcelProcessor\sample data\truck-data\WEST 2017 Monatsinfos .xls";
-            string ExportGridData1 = @"D:\Data\Programming\Visual C#\ExcelProcessor\sample data\example-report\ExportGridData20170824 15 41 33.xlsb";
-            string ExportGridData2 = @"D:\Data\Programming\Visual C#\ExcelProcessor\sample data\example-report\ExportGridData20170824 15 28 26.xlsb";
+
+            string OutputPath = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\Output.txt";
+
+            string xlsFileBelgien = @"D:\Data\Programming\Visual C#\Excel\sample data\truck-data\Belgien 2017 Monatsinfos .xls";
+            string xlsFileEast = @"D:\Data\Programming\Visual C#\Excel\sample data\truck-data\EAST 2017 Monatsinfos .xls";
+            string xlsFileWest = @"D:\Data\Programming\Visual C#\Excel\sample data\truck-data\WEST 2017 Monatsinfos .xls";
+            string ExportGridData1 = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\ExportGridData20170824 15 41 33.xlsb";
+            string ExportGridData2 = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\ExportGridData20170824 15 28 26.xlsb";
+            string _300606Path = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\300606.XLSX";
+            string _F61506817081Path = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\F61506817081.xlsx";
+            
+            //USUN WARTOSCI UJEMNE 
 
             InitializeComponent();
             TruckDataToExcel("4",xlsFileBelgien);
@@ -34,8 +42,12 @@ namespace ExcelProcessor
             TruckDataToExcel("4", xlsFileWest);
             ExportGridDataToExcel(ExportGridData1);
             ExportGridDataToExcel(ExportGridData2);
+            _F61506817081ToExcel(_F61506817081Path);
 
             SaveOutputToTxt(OutputPath);
+
+            MyExcel.Workbooks.Close();
+            MyExcel.Quit();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -47,7 +59,7 @@ namespace ExcelProcessor
         {
             string xlFile = @"D:\Data\Programowanie\Visual C#\ExcelProcessor\sample data\truck-data\Belgien 2017 Monatsinfos .xls";
 
-            Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
+            //Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
 
@@ -67,7 +79,7 @@ namespace ExcelProcessor
         {
             string xlFileBelgien = xlFile;
             
-            Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
+            //Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
 
@@ -119,21 +131,17 @@ namespace ExcelProcessor
 
             while (MyCells.Item[RegistrationStartRow, RegistrationStartColumn].Value!=null)
             {
-                TruckData.Add(new Truck { Registration = MyCells.Item[RegistrationStartRow, RegistrationStartColumn].Value , Kilometers = System.Convert.ToInt32(MyCells.Item[KilometersStartRow, KilometersStartColumn].Value) });
+                String Reg = MyCells.Item[RegistrationStartRow, RegistrationStartColumn].Value;
+                Reg = Reg.Replace(" ", string.Empty);
+                
+                TruckData.Add(new Truck { Registration = Reg, Kilometers = System.Convert.ToInt32(MyCells.Item[KilometersStartRow, KilometersStartColumn].Value) });
                 RegistrationStartRow++;
                 KilometersStartRow++;               
             }
-
-            {/*foreach (Truck element in TruckData)
-            {
-                String R = element.GetRegistration();
-                int K = element.GetKilometers();
-                MessageBox.Show(R);
-                MessageBox.Show(K.ToString());                                
-            }*/ }
+           
         }        
 
-        public void ExportGridDataToExcel(string Path)
+        private void ExportGridDataToExcel(string Path)
         {
             string RegistrationColumn = "B";
             string ProductColumn = "G";
@@ -141,10 +149,10 @@ namespace ExcelProcessor
             string NettoPriceColumn = "M";
             string CurrencyColumn = "I";
 
-            Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
+            //Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
-
+            
             MyExcel.Workbooks.Open(Path);
             MyWorksheet = MyExcel.Worksheets.Item[1];
             MyCells = MyWorksheet.Cells;
@@ -155,7 +163,7 @@ namespace ExcelProcessor
             while(CurrentRow<=iRowCount)
             {
                 String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
-                Reg.Replace(" ", string.Empty);
+                Reg = Reg.Replace(" ", string.Empty);
 
                 foreach (Truck element in TruckData)
                 {
@@ -187,29 +195,81 @@ namespace ExcelProcessor
                     }                   
                 }
                 CurrentRow++;
+
+               
             }
 
-
-            {/*foreach (Truck element in TruckData)
-            {
-                String R = element.GetRegistration();
-                int K = element.GetKilometers();
-                MessageBox.Show(R);
-                MessageBox.Show(K.ToString());
-                K = element.AdblueCost;
-                MessageBox.Show(K.ToString());
-                K = element.AdblueL;
-                MessageBox.Show(K.ToString());
-                K = element.DieselCost;
-                MessageBox.Show(K.ToString());
-                K = element.DieselL;
-                MessageBox.Show(K.ToString());
-                K = element.RoadTax;
-                MessageBox.Show(K.ToString());
-                K = element.OtherCost;
-                MessageBox.Show(K.ToString());
-            }*/}
+            
         }
+
+        private void _300606ToExcel (string Path)
+        {
+
+        }
+
+        private void _F61506817081ToExcel(string Path)
+        {
+            string RegistrationColumn = "X";
+            string ProductColumn = "E";
+            string QuantityColumn = "F";
+            string NettoPriceColumn = "P";
+            string CurrencyColumn = "O";
+
+            Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
+            Microsoft.Office.Interop.Excel.Range MyCells;
+
+            MyExcel.Workbooks.Open(Path);
+            MyWorksheet = MyExcel.Worksheets.Item[1];
+            MyCells = MyWorksheet.Cells;
+
+            int CurrentRow = 2;
+            int iRowCount = MyWorksheet.UsedRange.Rows.Count;
+
+            while (CurrentRow <= iRowCount)
+            {
+                String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
+                Reg = Reg.Replace(" ", string.Empty);
+
+                foreach (Truck element in TruckData)
+                {
+                    if (element.Registration == Reg)
+                    {
+                        String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
+                        if (match(ProductName, new string[] { "Olej", "Diesel" }))
+                        {
+                            element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
+                            element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            //currency
+                        }
+                        else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway" }))
+                        {
+                            element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            //currency
+                        }
+                        else if (match(ProductName, new string[] { "AdBlue" }))
+                        {
+                            element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
+                            element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            //currency
+                        }
+                        else  //OTHER COST TO MAJA BYC M.IN. NIEOPISANE??
+                        {
+                            element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            //currency
+                        }
+                    }
+                }
+                CurrentRow++;
+
+
+            }
+
+        }
+
+
+
+
+
 
         public bool match(String ProductName, string [] Tab)
         {
@@ -254,7 +314,7 @@ namespace ExcelProcessor
             }
         }
 
-
+        
 
     }
 
