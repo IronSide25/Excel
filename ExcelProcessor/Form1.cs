@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
+
 
 namespace ExcelProcessor
 {
@@ -30,10 +32,12 @@ namespace ExcelProcessor
             string xlsFileEast = @"D:\Data\Programming\Visual C#\Excel\sample data\truck-data\EAST 2017 Monatsinfos .xls";
             string xlsFileWest = @"D:\Data\Programming\Visual C#\Excel\sample data\truck-data\WEST 2017 Monatsinfos .xls";
             string ExportGridData1 = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\ExportGridData20170824 15 41 33.xlsb";
-            string ExportGridData2 = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\ExportGridData20170824 15 28 26.xlsb";
-            string _300606Path = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\300606.XLSX";
+            string ExportGridData2 = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\ExportGridData20170824 15 28 26.xlsb";            
             string _F61506817081Path = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\F61506817081.xlsx";
-            
+            string _300606Path = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\300606.XLSX"; // nie wiemy jak to czytac
+            string SN760756Path = @"D:\Data\Programming\Visual C#\Excel\sample data\example-report\SN760756.xlsx";//CSV
+            string OutputFile = @"D:\DATA\Programming\Visual C#\Excel\sample data\example-report\Wynik.xlsx";
+
             //USUN WARTOSCI UJEMNE 
 
             InitializeComponent();
@@ -43,11 +47,17 @@ namespace ExcelProcessor
             ExportGridDataToExcel(ExportGridData1);
             ExportGridDataToExcel(ExportGridData2);
             _F61506817081ToExcel(_F61506817081Path);
+            SN760756ToExcel(SN760756Path);// nie dziala bo csv
 
             SaveOutputToTxt(OutputPath);
+            SaveOutputToFile(OutputFile);
 
             MyExcel.Workbooks.Close();
             MyExcel.Quit();
+
+            foreach (Process process in Process.GetProcessesByName("Excel"))
+                process.Kill();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -260,13 +270,68 @@ namespace ExcelProcessor
                     }
                 }
                 CurrentRow++;
-
-
             }
-
         }
 
+        private void SN760756ToExcel(string Path)
+        {
+            string RegistrationColumn = "B";
+            string ProductColumn = "L";
+            string QuantityColumn = "M";
+            string NettoPriceColumn = "Z";
+            string CurrencyColumn = "AA";
 
+            
+            Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
+            Microsoft.Office.Interop.Excel.Range MyCells;
+
+            MyExcel.Workbooks.Open(Path);
+            MyWorksheet = MyExcel.Worksheets.Item[1];
+            MyCells = MyWorksheet.Cells;
+
+            int CurrentRow = 6;
+            int iRowCount = MyWorksheet.UsedRange.Rows.Count;
+
+            while (CurrentRow <= iRowCount )
+            {
+                if (MyCells.Item[CurrentRow, RegistrationColumn].Value != null)
+                {
+                    String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
+                    Reg = Reg.Replace(" ", string.Empty);
+
+                    foreach (Truck element in TruckData)
+                    {
+                        if (element.Registration == Reg)
+                        {
+                            String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
+                            if (match(ProductName, new string[] { "Olej", "Diesel", "ON" }))
+                            {
+                                element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
+                                element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;                                
+                                //currency
+                            }
+                            else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway", "Eurowinieta", "drogowe" }))
+                            {
+                                element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                                //currency
+                            }
+                            else if (match(ProductName, new string[] { "AdBlue" }))
+                            {
+                                element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
+                                element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                                //currency
+                            }
+                            else  //OTHER COST TO MAJA BYC M.IN. NIEOPISANE??
+                            {
+                                element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                                //currency
+                            }
+                        }
+                    }
+                }
+                CurrentRow++;
+            }
+        }
 
 
 
@@ -314,7 +379,87 @@ namespace ExcelProcessor
             }
         }
 
-        
+        public void SaveOutputToFile(string Path)
+        {
+
+            Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Workbook ExcelWorkBook = null;
+            Microsoft.Office.Interop.Excel.Worksheet ExcelWorkSheet = null;
+
+            //ExcelApp.Visible = true;
+            ExcelWorkBook = ExcelApp.Workbooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
+            //ExcelWorkBook.Worksheets.Add(); //Adding New Sheet in Excel Workbook
+            
+
+            //try
+            {
+                ExcelWorkSheet = ExcelWorkBook.Worksheets[1]; // Compulsory Line in which sheet you want to write data
+    
+                
+                int CurrentRow = 2;
+                int CurrentColumn = 1;
+
+
+
+                foreach (Truck element in TruckData)
+                {
+                    String R = element.GetRegistration();
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = R;
+                    CurrentColumn++;
+                    float K = element.GetKilometers();
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+                    K = element.AdblueCost;
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+                    K = element.AdblueL;
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+                    K = element.DieselCost;
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+                    K = element.DieselL;
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+                    K = element.RoadTax;
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+                    K = element.OtherCost;
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn=1;
+                    CurrentRow++;
+
+
+                }
+                ExcelWorkBook.Worksheets[1].Name = "MySheet";//Renaming the Sheet1 to MySheet
+                ExcelWorkBook.SaveAs(@"D:\DATA\Programming\Visual C#\Excel\sample data\example-report\Wynik.xlsx");
+                ExcelWorkBook.Close();
+                ExcelApp.Quit();
+                //Marshal.ReleaseComObject(ExcelWorkSheet);
+                //Marshal.ReleaseComObject(ExcelWorkBook);
+                //Marshal.ReleaseComObject(ExcelApp);
+            }
+            //catch (Exception exHandle)
+            {
+                //Console.WriteLine("Exception: " + exHandle.Message);
+                //Console.ReadLine();
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
 
     }
 
