@@ -110,21 +110,11 @@ namespace WindowsFormsApp1
             }
 
             status.Text = "Przetwarzanie..";
-            string selectedMonth = (month.SelectedIndex + 1).ToString();  
-            
-            /*
-            //MessageBox.Show(starting);
-            foreach(string path in dirsList)
-            {
-                MessageBox.Show(path);
-            }
-            */
+            string selectedMonth = (month.SelectedIndex + 1).ToString();
 
 
-            //float toPLN = cc.getRateOf("PLN");
-            //float toCZK = cc.getRateOf("CZK");
-
-            //MessageBox.Show("PLN: " + toPLN + ". CZK: " + toCZK );
+            excelProcessingProgress.Maximum = dirsList.Count * 3 + 2;
+            excelProcessingProgress.Step = 1;
 
 
             ExcelReader excelReader = new ExcelReader();
@@ -137,10 +127,11 @@ namespace WindowsFormsApp1
                     //MessageBox.Show("sending " + path + ", month: '" + selectedMonth + "'");
                     excelReader.TruckDataToExcel("4", path);
                 }
+                excelProcessingProgress.PerformStep();
             }
 
 
-            status.Text = "Przetwarzanie...";
+            
 
             foreach (string path in dirsList)
             {
@@ -171,24 +162,25 @@ namespace WindowsFormsApp1
 
                 }
 
+                excelProcessingProgress.PerformStep();
+                excelProcessingProgress.PerformStep();
+
+
             }
 
-
-            status.Text = "Przetwarzanie....";
-
+            
             excelReader.SaveOutputToFile(outputPath);
-
-
-            status.Text = "Przetwarzanie.....";
+            excelProcessingProgress.PerformStep();
 
             excelReader.closeAll();
+            excelProcessingProgress.PerformStep();
 
             MessageBox.Show("Zakończono!");
 
-
+            status.Text = "Upuść pliki tutaj";
+            excelProcessingProgress.Value = 0;
             Process.Start(outputPath);
 
-            status.Text = "Upuść pliki tutaj";
 
         }
 
@@ -196,5 +188,7 @@ namespace WindowsFormsApp1
         {
 
         }
+
+
     }
 }

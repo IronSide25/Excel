@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.generujRaport = new System.Windows.Forms.Button();
             this.month = new System.Windows.Forms.ComboBox();
+            this.excelProcessingProgress = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // status
@@ -112,12 +113,21 @@
             this.month.TabIndex = 5;
             this.month.Text = "Wybierz miesiąc";
             // 
+            // excelProcessingProgress
+            // 
+            this.excelProcessingProgress.Location = new System.Drawing.Point(62, 219);
+            this.excelProcessingProgress.Name = "excelProcessingProgress";
+            this.excelProcessingProgress.Size = new System.Drawing.Size(209, 23);
+            this.excelProcessingProgress.TabIndex = 6;
+
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.ClientSize = new System.Drawing.Size(720, 370);
+            this.Controls.Add(this.excelProcessingProgress);
             this.Controls.Add(this.month);
             this.Controls.Add(this.generujRaport);
             this.Controls.Add(this.label1);
@@ -137,6 +147,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button generujRaport;
         private System.Windows.Forms.ComboBox month;
+        private System.Windows.Forms.ProgressBar excelProcessingProgress;
     }
 }
 

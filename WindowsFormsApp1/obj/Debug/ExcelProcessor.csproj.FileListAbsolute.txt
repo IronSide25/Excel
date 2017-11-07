@@ -10,3 +10,15 @@ C:\Users\mateu\documents\visual studio 2017\Projects\WindowsFormsApp1\WindowsFor
 C:\Users\mateu\documents\visual studio 2017\Projects\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\ExcelProcessor.csproj.CoreCompileInputs.cache
 C:\Users\mateu\documents\visual studio 2017\Projects\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
 C:\Users\mateu\documents\visual studio 2017\Projects\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\Newtonsoft.Json.dll
+S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\Newtonsoft.Json.xml
+S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csprojResolveAssemblyReference.cache
+S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form1.resources
+S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csproj.GenerateResource.Cache
+S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csproj.CoreCompileInputs.cache
+S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
