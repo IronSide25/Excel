@@ -21,6 +21,7 @@ namespace WindowsFormsApp1
         public static ExcelType recognizeExcel(string pathToExcel)
         {
             
+
             string extension = System.IO.Path.GetExtension(pathToExcel).ToLower();
             if (pathToExcel.Contains( "SN760756.xlsx"))
                 return ExcelType.SN_AND_NUMBERS;

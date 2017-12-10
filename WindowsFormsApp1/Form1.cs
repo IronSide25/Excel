@@ -27,6 +27,10 @@ namespace WindowsFormsApp1
             this.DragEnter += Form1_DragEnter;
             this.DragDrop += Form1_DragDrop;
 
+            CurrencyConverter cur = new CurrencyConverter();
+            
+            MessageBox.Show(cur.getRateOf("EUR").ToString());
+
         }
 
         private void drop(object sender, DragEventArgs e)

@@ -30,7 +30,7 @@ namespace WindowsFormsApp1
             if (((HttpWebResponse)response).StatusDescription != "OK")
             {
                 // Should I handle it? xD     
-                // MessageBox.Show("Failed to download exchange data. Check your internet connection.");
+                //MessageBox.Show("Failed to download exchange data. Check your internet connection.");
                 dataDownloaded = false;
                 return;
             }
@@ -57,6 +57,8 @@ namespace WindowsFormsApp1
         // "PLN" - 0.23
         public float getRateOf(string currency)
         {
+            if (currency.Equals("EUR"))
+                return 1;
             double rate = (double)(decimal)CurrencyTable[currency];
             double reverseRate = Math.Round(1.0f / rate, 4);
             return (float)reverseRate;

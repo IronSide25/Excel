@@ -22,3 +22,14 @@ S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csproj.GenerateResour
 S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csproj.CoreCompileInputs.cache
 S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
 S:\Code\C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\bin\Debug\Newtonsoft.Json.dll
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\bin\Debug\Newtonsoft.Json.xml
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csprojResolveAssemblyReference.cache
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form1.resources
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csproj.GenerateResource.Cache
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb

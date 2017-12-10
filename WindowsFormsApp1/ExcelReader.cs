@@ -166,30 +166,26 @@ namespace WindowsFormsApp1
 
                 foreach (Truck element in TruckData)
                 {
-                    if (element.Registration == Reg)
+                    if (element.Registration == Reg)//this is working, just lookin bad
                     {
                         String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
-                        if (match(ProductName, new string[] { "Olej", "Diesel" }))
+                        if (match(ProductName, new string[] { "Olej", "Diesel" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
                             element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                            //currency
+                            element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                         }
-                        else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway" }))
+                        else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway" }) && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
-                            element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                            //currency
+                            element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                         }
-                        else if (match(ProductName, new string[] { "AdBlue" }))
+                        else if (match(ProductName, new string[] { "AdBlue" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
                             element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                            //currency
+                            element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                         }
-                        else  //OTHER COST TO MAJA BYC M.IN. NIEOPISANE??
+                        else if(MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0) 
                         {
-                            element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                            //currency
+                            element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                         }
                     }
                 }
@@ -238,7 +234,7 @@ namespace WindowsFormsApp1
                     if (element.Registration == Reg)
                     {
                         String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
-                        if (match(ProductName, new string[] { "1", "2" }))
+                        if (match(ProductName, new string[] { "1", "2" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >=0)
                         {
                             element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
                             //element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
@@ -249,7 +245,7 @@ namespace WindowsFormsApp1
                             //element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
                             //currency
                         }
-                        else if (match(ProductName, new string[] { "5" }))
+                        else if (match(ProductName, new string[] { "5" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0)
                         {
                             element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
                             //element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
@@ -299,30 +295,26 @@ namespace WindowsFormsApp1
 
                 foreach (Truck element in TruckData)
                 {
-                    if (element.Registration == Reg)
+                    if (element.Registration == Reg)//this is working, just lookin bad
                     {
                         String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
-                        if (match(ProductName, new string[] { "Olej", "Diesel" }))
+                        if (match(ProductName, new string[] { "Olej", "Diesel" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
                             element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                            //currency
+                            element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                         }
-                        else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway" }))
+                        else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway" }) && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
-                            element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                            //currency
+                            element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                         }
-                        else if (match(ProductName, new string[] { "AdBlue" }))
+                        else if (match(ProductName, new string[] { "AdBlue" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
                             element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                            //currency
+                            element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                         }
-                        else  //OTHER COST TO MAJA BYC M.IN. NIEOPISANE??
+                        else if(MyCells.Item[CurrentRow, NettoPriceColumn].Value>=0) 
                         {
-                            element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                            //currency
+                            element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                         }
                     }
                 }
@@ -370,30 +362,26 @@ namespace WindowsFormsApp1
 
                     foreach (Truck element in TruckData)
                     {
-                        if (element.Registration == Reg)
+                        if (element.Registration == Reg)//this is working, just lookin bad
                         {
                             String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
-                            if (match(ProductName, new string[] { "Olej", "Diesel", "ON" }))
+                            if (match(ProductName, new string[] { "Olej", "Diesel", "ON" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                             {
                                 element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                                element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                                //currency
+                                element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value*currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                             }
-                            else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway", "Eurowinieta", "drogowe" }))
+                            else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway", "Eurowinieta", "drogowe" }) && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                             {
-                                element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                                //currency
+                                element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                             }
-                            else if (match(ProductName, new string[] { "AdBlue" }))
+                            else if (match(ProductName, new string[] { "AdBlue" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                             {
                                 element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                                element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                                //currency
+                                element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                             }
-                            else  //OTHER COST TO MAJA BYC M.IN. NIEOPISANE??
+                            else if(MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0) 
                             {
-                                element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
-                                //currency
+                                element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
                             }
                         }
                     }
