@@ -39,20 +39,27 @@ namespace WindowsFormsApp1
                 return ExcelType.ERROR;
             }
 
-
+            string firstCell = "";
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
             Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
             Microsoft.Office.Interop.Excel.Workbook MyWorkbook;
-
+            try { 
             MyWorkbook = MyExcel.Workbooks.Open(pathToExcel);
             MyWorksheet = MyExcel.Worksheets.Item[1];
             MyCells = MyWorksheet.Cells;
+           
 
-
-            string firstCell = (System.Convert.ToString(MyCells.Item[1, 1].Value)) + "";
+            firstCell = (System.Convert.ToString(MyCells.Item[1, 1].Value)) + "";
             MyWorkbook.Close(false);
             MyExcel.Quit();
+
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + pathToExcel);
+                return ExcelType.ERROR;
+            }
 
 
             switch (firstCell)

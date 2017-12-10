@@ -83,6 +83,14 @@ namespace WindowsFormsApp1
 
         }
         
+        void cancelGeneration(ExcelReader excelReader)
+        {
+            MessageBox.Show("Generowanie raportu przerwane.\n" +
+                            "Sprawdź, czy wybrałeś właściwe pliki.\n" +
+                            "Jeśli problem będzie występował dalej, zamknij wszystkie aktywne arkusze Excela");
+            excelReader.closeAll();
+            excelProcessingProgress.Value = 0;
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -122,10 +130,21 @@ namespace WindowsFormsApp1
 
             foreach(string path in dirsList)
             {
-                if(ExcelRecogniser.recognizeExcel(path) == ExcelType.TRUCK_DATA)
+                ExcelType excelType = ExcelRecogniser.recognizeExcel(path);
+                if(excelType == ExcelType.ERROR)
+                {
+                    cancelGeneration(excelReader);
+                    return;
+                }
+                if (excelType == ExcelType.TRUCK_DATA)
                 {
                     //MessageBox.Show("sending " + path + ", month: '" + selectedMonth + "'");
-                    excelReader.TruckDataToExcel("4", path);
+                    if(!excelReader.TruckDataToExcel("4", path))
+                    {
+                        cancelGeneration(excelReader);
+
+                        return;
+                    }
                 }
                 excelProcessingProgress.PerformStep();
             }
@@ -139,27 +158,41 @@ namespace WindowsFormsApp1
 
                 //MessageBox.Show("recognized: " + excelType.ToString());
 
+
+                bool stepPerformedSuccessfully = true;
+
                 switch (excelType)
 
                 {
                     case ExcelType.EXPORT_GRID_DATA:
 
-                        excelReader.ExportGridDataToExcel(path);
+                        stepPerformedSuccessfully = excelReader.ExportGridDataToExcel(path);
                         break;
 
                     case ExcelType.F_AND_NUMBERS:
-                        excelReader._F61506817081ToExcel(path);
+                        stepPerformedSuccessfully = excelReader._F61506817081ToExcel(path);
                         break;
                     case ExcelType.JUST_NUMBERS:
-                        excelReader._300606ToExcel(path);
+                        stepPerformedSuccessfully = excelReader._300606ToExcel(path);
                         break;
                     case ExcelType.SN_AND_NUMBERS:
-                        excelReader.SN760756ToExcel(path);
+                        stepPerformedSuccessfully = excelReader.SN760756ToExcel(path);
                         break;
+
+                    case ExcelType.ERROR:
+                        cancelGeneration(excelReader);
+                        return;
 
                     default:
                         break;
 
+                }
+
+                if(!stepPerformedSuccessfully)
+                {
+                    cancelGeneration(excelReader);
+
+                    return;
                 }
 
                 excelProcessingProgress.PerformStep();

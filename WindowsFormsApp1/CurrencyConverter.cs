@@ -12,7 +12,13 @@ namespace WindowsFormsApp1
         //          "PLN"   0.23
         Dictionary <string, object> CurrencyTable;
 
+        bool dataDownloaded;
         string exchangeRateDataUrl = "http://api.fixer.io/latest";
+
+        public bool hasBeenConstructedInAProperWay()
+        {
+            return dataDownloaded;
+        }
 
         public CurrencyConverter()
         {
@@ -23,9 +29,13 @@ namespace WindowsFormsApp1
             // Handle a possible status error.
             if (((HttpWebResponse)response).StatusDescription != "OK")
             {
-               // Should I handle it? xD     
-               // MessageBox.Show("Failed to download exchange data. Check your internet connection.");
+                // Should I handle it? xD     
+                // MessageBox.Show("Failed to download exchange data. Check your internet connection.");
+                dataDownloaded = false;
+                return;
             }
+
+            dataDownloaded = true;
 
             // Get the stream containing content returned by the server.
             Stream dataStream = response.GetResponseStream();
@@ -44,6 +54,7 @@ namespace WindowsFormsApp1
 
         }
 
+        // "PLN" - 0.23
         public float getRateOf(string currency)
         {
             double rate = (double)(decimal)CurrencyTable[currency];

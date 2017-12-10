@@ -44,16 +44,21 @@ namespace WindowsFormsApp1
         List<Truck> TruckData = new List<Truck>();
         List<String> Alphabet = new List<String>();
         Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
-
+        CurrencyConverter currencyConverter;
 
         public ExcelReader()
         {
+            currencyConverter = new CurrencyConverter();
+            if(currencyConverter.hasBeenConstructedInAProperWay() == false)
+            {
+                System.Windows.Forms.MessageBox.Show("Nie działa internet!");
+            }
             Alphabet.Add("A"); Alphabet.Add("B"); Alphabet.Add("C"); Alphabet.Add("D"); Alphabet.Add("E"); Alphabet.Add("F"); Alphabet.Add("G"); Alphabet.Add("H"); Alphabet.Add("I"); Alphabet.Add("J"); Alphabet.Add("K"); Alphabet.Add("L"); Alphabet.Add("M"); Alphabet.Add("N"); Alphabet.Add("O"); Alphabet.Add("P"); Alphabet.Add("Q"); Alphabet.Add("R"); Alphabet.Add("S"); Alphabet.Add("T"); Alphabet.Add("U"); Alphabet.Add("V"); Alphabet.Add("W"); Alphabet.Add("X"); Alphabet.Add("Y"); Alphabet.Add("Z");
 
         }
 
 
-        public void TruckDataToExcel(String Month, string xlFile)
+        public bool TruckDataToExcel(String Month, string xlFile)
         {
             string xlFileBelgien = xlFile;
 
@@ -61,9 +66,17 @@ namespace WindowsFormsApp1
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
 
-            MyExcel.Workbooks.Open(xlFileBelgien);
-            MyWorksheet = MyExcel.Worksheets.Item[1];
-            MyCells = MyWorksheet.Cells;
+            try
+            {
+                MyExcel.Workbooks.Open(xlFileBelgien);
+                MyWorksheet = MyExcel.Worksheets.Item[1];
+                MyCells = MyWorksheet.Cells;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + xlFile);
+                return false;
+            }
 
             int iRowCount = MyWorksheet.UsedRange.Rows.Count;
             int iColumnCount = MyWorksheet.UsedRange.Columns.Count;
@@ -117,9 +130,11 @@ namespace WindowsFormsApp1
                 KilometersStartRow++;
             }
 
+            return true;
+
         }
 
-        public void ExportGridDataToExcel(string Path)
+        public bool ExportGridDataToExcel(string Path)
         {
             string RegistrationColumn = "B";
             string ProductColumn = "G";
@@ -131,9 +146,15 @@ namespace WindowsFormsApp1
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
 
+            try { 
             MyExcel.Workbooks.Open(Path);
             MyWorksheet = MyExcel.Worksheets.Item[1];
             MyCells = MyWorksheet.Cells;
+            }catch(Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + Path);
+                return false;
+            }
 
             int CurrentRow = 2;
             int iRowCount = MyWorksheet.UsedRange.Rows.Count;
@@ -177,15 +198,77 @@ namespace WindowsFormsApp1
 
             }
 
-
+            return true;
         }
 
-        public void _300606ToExcel(string Path)
+        public bool _300606ToExcel(string Path)
         {
+            //return;
+            //System.Windows.Forms.MessageBox.Show("siema");
+            string RegistrationColumn = "N";
+            string ProductColumn = "E";
+            string QuantityColumn = "F";
+            //string NettoPriceColumn = "P";
+            //string CurrencyColumn = "O";
 
+            Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
+            Microsoft.Office.Interop.Excel.Range MyCells;
+
+            try { 
+            MyExcel.Workbooks.Open(Path);
+            MyWorksheet = MyExcel.Worksheets.Item[1];
+            MyCells = MyWorksheet.Cells;
+            } catch(Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + Path);
+                return false;
+            }
+
+            int CurrentRow = 2;
+            int iRowCount = MyWorksheet.UsedRange.Rows.Count;
+
+            while (CurrentRow <= iRowCount)
+            {
+                String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
+                Reg = Reg.Replace(" ", string.Empty);
+
+
+                foreach (Truck element in TruckData)
+                {
+                    if (element.Registration == Reg)
+                    {
+                        String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
+                        if (match(ProductName, new string[] { "1", "2" }))
+                        {
+                            element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
+                            //element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            //currency
+                        }
+                        else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway" }))
+                        {
+                            //element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            //currency
+                        }
+                        else if (match(ProductName, new string[] { "5" }))
+                        {
+                            element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
+                            //element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            //currency
+                        }
+                        else  //OTHER COST TO MAJA BYC M.IN. NIEOPISANE??
+                        {
+                            //element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            //currency
+                        }
+                    }
+                }
+                CurrentRow++;
+            }
+
+            return true;
         }
 
-        public void _F61506817081ToExcel(string Path)
+        public bool _F61506817081ToExcel(string Path)
         {
             string RegistrationColumn = "X";
             string ProductColumn = "E";
@@ -196,9 +279,15 @@ namespace WindowsFormsApp1
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
 
+            try {
             MyExcel.Workbooks.Open(Path);
             MyWorksheet = MyExcel.Worksheets.Item[1];
             MyCells = MyWorksheet.Cells;
+            } catch(Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + Path);
+                return false;
+            }
 
             int CurrentRow = 2;
             int iRowCount = MyWorksheet.UsedRange.Rows.Count;
@@ -239,9 +328,11 @@ namespace WindowsFormsApp1
                 }
                 CurrentRow++;
             }
+
+            return true;
         }
 
-        public void SN760756ToExcel(string Path)
+        public bool SN760756ToExcel(string Path)
         {
             //FIXME
             //return;
@@ -256,9 +347,16 @@ namespace WindowsFormsApp1
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
 
-            MyExcel.Workbooks.Open(Path);
-            MyWorksheet = MyExcel.Worksheets.Item[1];
-            MyCells = MyWorksheet.Cells;
+            try
+            {
+                MyExcel.Workbooks.Open(Path);
+                MyWorksheet = MyExcel.Worksheets.Item[1];
+                MyCells = MyWorksheet.Cells;
+            } catch(Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + Path);
+                return false;
+            }
 
             int CurrentRow = 6;
             int iRowCount = MyWorksheet.UsedRange.Rows.Count;
@@ -302,6 +400,8 @@ namespace WindowsFormsApp1
                 }
                 CurrentRow++;
             }
+
+            return true;
         }
 
 
@@ -406,9 +506,10 @@ namespace WindowsFormsApp1
                     CurrentRow++;
 
                 }
-                ExcelWorkBook.Worksheets[1].Name = "MySheet";//Renaming the Sheet1 to MySheet
+                ExcelWorkBook.Worksheets[1].Name = "Raport";//Renaming the Sheet1 to MySheet
+                
                 ExcelWorkBook.SaveAs(Path);
-                ExcelWorkBook.Close();
+                ExcelWorkBook.Close(false);
                 ExcelApp.Quit();
                 //Marshal.ReleaseComObject(ExcelWorkSheet);
                 //Marshal.ReleaseComObject(ExcelWorkBook);
