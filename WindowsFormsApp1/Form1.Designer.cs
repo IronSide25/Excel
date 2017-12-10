@@ -34,6 +34,7 @@
             this.generujRaport = new System.Windows.Forms.Button();
             this.month = new System.Windows.Forms.ComboBox();
             this.excelProcessingProgress = new System.Windows.Forms.ProgressBar();
+            this.generate_extra_rachunek = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // status
@@ -119,7 +120,17 @@
             this.excelProcessingProgress.Name = "excelProcessingProgress";
             this.excelProcessingProgress.Size = new System.Drawing.Size(209, 23);
             this.excelProcessingProgress.TabIndex = 6;
-
+            // 
+            // generate_extra_rachunek
+            // 
+            this.generate_extra_rachunek.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.generate_extra_rachunek.Location = new System.Drawing.Point(13, 324);
+            this.generate_extra_rachunek.Name = "generate_extra_rachunek";
+            this.generate_extra_rachunek.Size = new System.Drawing.Size(328, 33);
+            this.generate_extra_rachunek.TabIndex = 7;
+            this.generate_extra_rachunek.Text = "Wygeneruj przykładowy Rachunek Extra";
+            this.generate_extra_rachunek.UseVisualStyleBackColor = true;
+            this.generate_extra_rachunek.Click += new System.EventHandler(this.generate_extra_rachunek_Click);
             // 
             // Form1
             // 
@@ -127,6 +138,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.ClientSize = new System.Drawing.Size(720, 370);
+            this.Controls.Add(this.generate_extra_rachunek);
             this.Controls.Add(this.excelProcessingProgress);
             this.Controls.Add(this.month);
             this.Controls.Add(this.generujRaport);
@@ -148,6 +160,7 @@
         private System.Windows.Forms.Button generujRaport;
         private System.Windows.Forms.ComboBox month;
         private System.Windows.Forms.ProgressBar excelProcessingProgress;
+        private System.Windows.Forms.Button generate_extra_rachunek;
     }
 }
 

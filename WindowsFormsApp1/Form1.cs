@@ -12,8 +12,8 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         //list of directories
-        public List <string> dirsList;
-       
+        public List<string> dirsList;
+
 
         public Form1()
         {
@@ -58,7 +58,7 @@ namespace WindowsFormsApp1
                     {
 
                         addFile(fileLoc);
-                        
+
                     }
 
                 }
@@ -70,7 +70,7 @@ namespace WindowsFormsApp1
             //FIXME
             dirsList.Add(fileLoc);
             filesList.Items.Add(Path.GetFileName(fileLoc));
-            filesList.SetItemChecked(filesList.Items.Count - 1, true) ;
+            filesList.SetItemChecked(filesList.Items.Count - 1, true);
         }
 
         private void filesList_SelectedIndexChanged(object sender, EventArgs e)
@@ -82,7 +82,7 @@ namespace WindowsFormsApp1
             filesList.Items.Remove(filesList.SelectedItem);
 
         }
-        
+
         void cancelGeneration(ExcelReader excelReader)
         {
             MessageBox.Show("Generowanie raportu przerwane.\n" +
@@ -126,12 +126,12 @@ namespace WindowsFormsApp1
 
 
             ExcelReader excelReader = new ExcelReader();
-            
 
-            foreach(string path in dirsList)
+
+            foreach (string path in dirsList)
             {
                 ExcelType excelType = ExcelRecogniser.recognizeExcel(path);
-                if(excelType == ExcelType.ERROR)
+                if (excelType == ExcelType.ERROR)
                 {
                     cancelGeneration(excelReader);
                     return;
@@ -139,7 +139,7 @@ namespace WindowsFormsApp1
                 if (excelType == ExcelType.TRUCK_DATA)
                 {
                     //MessageBox.Show("sending " + path + ", month: '" + selectedMonth + "'");
-                    if(!excelReader.TruckDataToExcel("4", path))
+                    if (!excelReader.TruckDataToExcel("4", path))
                     {
                         cancelGeneration(excelReader);
 
@@ -150,7 +150,7 @@ namespace WindowsFormsApp1
             }
 
 
-            
+
 
             foreach (string path in dirsList)
             {
@@ -188,7 +188,7 @@ namespace WindowsFormsApp1
 
                 }
 
-                if(!stepPerformedSuccessfully)
+                if (!stepPerformedSuccessfully)
                 {
                     cancelGeneration(excelReader);
 
@@ -219,11 +219,62 @@ namespace WindowsFormsApp1
 
         }
 
-        private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
+
+        private void generate_extra_rachunek_Click(object sender, EventArgs e)
         {
+            string outputPath = "";
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Title = "Gdzie zapisać przykładowy extra rachunek?";
+            saveFileDialog1.FileName = "rachunek_extra.xlsx";
+            saveFileDialog1.Filter = "Arkusz Programu Microsoft Excel (*.xlsx)|*.xlsx";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                outputPath = saveFileDialog1.FileName;
+            }
+            else
+            {
+                return;
+            }
+
+            //MessageBox.Show(outputPath);
+
+            Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Workbook ExcelWorkBook = null;
+            Microsoft.Office.Interop.Excel.Worksheet ExcelWorkSheet = null;
+
+            //ExcelApp.Visible = true;
+            ExcelWorkBook = ExcelApp.Workbooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
+            //ExcelWorkBook.Worksheets.Add(); //Adding New Sheet in Excel Workbook
+            
+                ExcelWorkSheet = ExcelWorkBook.Worksheets[1]; // Compulsory Line in which sheet you want to write data
+
+                int CurrentRow = 2;
+                int CurrentColumn = 1;
+
+                ExcelWorkSheet.Cells[1, 1] = "Rejestracja";
+                ExcelWorkSheet.Cells[1, 2] = "Koszt AdBlue";
+                ExcelWorkSheet.Cells[1, 3] = "Ilosc AdBlue";
+                ExcelWorkSheet.Cells[1, 4] = "Diesel koszt";
+                ExcelWorkSheet.Cells[1, 5] = "Ilosc Diesel";
+                ExcelWorkSheet.Cells[1, 6] = "Podatek Drogowy";
+                ExcelWorkSheet.Cells[1, 7] = "Inne Koszty";
+                Microsoft.Office.Interop.Excel.Range aRange = ExcelWorkSheet.get_Range("A1", "G1");
+                aRange.Columns.AutoFit();
+                ExcelWorkBook.Worksheets[1].Name = "Rachunek extra";
+
+            if (File.Exists(outputPath))
+                File.Delete(outputPath);
+
+                ExcelWorkBook.SaveAs(outputPath);
+                ExcelWorkBook.Close(false);
+                ExcelApp.Quit();
+
+            MessageBox.Show("Zapisano!");
+            Process.Start(outputPath);
 
         }
-
-
     }
 }
