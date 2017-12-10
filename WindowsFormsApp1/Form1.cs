@@ -201,7 +201,9 @@ namespace WindowsFormsApp1
 
             }
 
-            
+            if (File.Exists(outputPath))
+                File.Delete(outputPath);
+
             excelReader.SaveOutputToFile(outputPath);
             excelProcessingProgress.PerformStep();
 
