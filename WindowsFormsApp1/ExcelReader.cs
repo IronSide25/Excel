@@ -354,64 +354,64 @@ namespace WindowsFormsApp1
 
         public bool SN760756ToExcel(string filePath)
         {
-            
-                try {
 
-                    var engine = new FileHelperEngine<TruckCSV>();
-                    var result = engine.ReadFile(filePath);
-                    
-                    // result is now an array of RekordCSV
+            //try {
 
-                    foreach (TruckCSV csvTruck in result)
+            var engine = new FileHelperEngine<TruckCSV>();
+            var result = engine.ReadFile(filePath);
+
+            // result is now an array of RekordCSV
+
+            foreach (TruckCSV csvTruck in result)
+            {
+                csvTruck.registration = csvTruck.registration.Replace(" ", string.Empty);
+
+
+                //THIS IS KAROL'S CODE
+
+                foreach (Truck element in TruckData)
+                {
+                    if (element.Registration == csvTruck.registration)//this is working, just lookin bad
                     {
-                        csvTruck.registration = csvTruck.registration.Replace(" ", string.Empty);
+                        //this is so fucking bad i don't even
+                        String ProductName = csvTruck.product;
 
-
-                    //THIS IS KAROL'S CODE
-
-                    foreach (Truck element in TruckData)
-                    {
-                        if (element.Registration == csvTruck.registration)//this is working, just lookin bad
+                        if (match(ProductName, new string[] { "Olej", "Diesel", "ON" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
                         {
-                            //this is so fucking bad i don't even
-                            String ProductName = csvTruck.product;
-
-                            if (match(ProductName, new string[] { "Olej", "Diesel", "ON" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
-                            {
-                                element.DieselL += (float)csvTruck.quantity;
-                                element.DieselCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
-                            }
-                            else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway", "Eurowinieta", "drogowe" }) && csvTruck.netto_price >= 0)
-                            {
-                                element.RoadTax += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
-                            }
-                            else if (match(ProductName, new string[] { "AdBlue" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
-                            {
-                                element.AdblueL += (float)csvTruck.quantity;
-                                element.AdblueCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
-                            }
-                            else if (csvTruck.netto_price >= 0)
-                            {
-                                element.OtherCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
-                            }
+                            element.DieselL += (float)csvTruck.quantity;
+                            element.DieselCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
+                        }
+                        else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway", "Eurowinieta", "drogowe" }) && csvTruck.netto_price >= 0)
+                        {
+                            element.RoadTax += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
+                        }
+                        else if (match(ProductName, new string[] { "AdBlue" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
+                        {
+                            element.AdblueL += (float)csvTruck.quantity;
+                            element.AdblueCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
+                        }
+                        else if (csvTruck.netto_price >= 0)
+                        {
+                            element.OtherCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
                         }
                     }
-                    //END OF PIETRZAKOWY KOD
+                }
+                //END OF PIETRZAKOWY KOD
 
-                }
+            }
 
-                }
-                catch (Exception e) {
-                    System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + filePath);
-                    return false;
-                }
+        //}
+                //catch (Exception e) {
+                 //   System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + filePath);
+                  //  return false;
+               // }
 
             return true;
         }
 
 
         //mothafuckin' deprecated
-        public bool SN760756ToExcel_XLSX(string Path)
+        public bool SN760756ToExcel_xlsx(string Path)
         {
             //FIXME
             //return;

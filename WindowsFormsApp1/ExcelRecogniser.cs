@@ -23,8 +23,15 @@ namespace WindowsFormsApp1
             
 
             string extension = System.IO.Path.GetExtension(pathToExcel).ToLower();
-            if (pathToExcel.Contains( "SN760756.xlsx"))
+            if (extension.Contains( "csv"))
                 return ExcelType.SN_AND_NUMBERS;
+
+            // should this exist?
+            //if (System.IO.Path.GetFileName(pathToExcel).Contains("SN"))
+            //    return ExcelType.SN_AND_NUMBERS;
+
+            // nah
+
 
             else if (pathToExcel.Contains("ExportGridData"))
                 return ExcelType.EXPORT_GRID_DATA;
@@ -35,7 +42,7 @@ namespace WindowsFormsApp1
 
             if (!extension.Contains("xls")) {
                 System.Windows.Forms.MessageBox.Show(
-                    "Cannot recognise " + pathToExcel + ". Are you sure the file is valid?"
+                    "Nie udało się rozpoznać " + pathToExcel + ". Sprawdź czy plik jest poprawny"
                     );
                 return ExcelType.ERROR;
             }
