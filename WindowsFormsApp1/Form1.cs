@@ -29,7 +29,8 @@ namespace WindowsFormsApp1
 
             CurrencyConverter cur = new CurrencyConverter();
             
-            MessageBox.Show(cur.getRateOf("EUR").ToString());
+            //jebane gówno
+            //MessageBox.Show(cur.getRateOf("EUR").ToString());
 
         }
 

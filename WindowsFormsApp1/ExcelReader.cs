@@ -3,9 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FileHelpers;
 
 namespace WindowsFormsApp1
 {
+    [IgnoreFirst(5)]
+    [IgnoreEmptyLines(true)]
+    [DelimitedRecord(";")]
+    public class TruckCSV
+    {
+        public string a, registration, c, d, e, f, g, h, i, j, k;
+        public string product;
+
+        [FieldConverter(ConverterKind.Double, ",")]
+        public double quantity; //quantity
+        public string n, o, p, q, r, s, t, u, v, w, x, y;
+
+        [FieldConverter(ConverterKind.Double, ",")]
+        public double netto_price;
+        public string currency, ab, ac, ad, ae;
+    }
+
+
+    // RegistrationColumn = "B";
+    // ProductColumn = "L";
+    // QuantityColumn = "M";
+    // NettoPriceColumn = "Z";
+    // CurrencyColumn = "AA";
+
+
+
     public class Truck
     {
         public String Registration;
@@ -197,6 +224,7 @@ namespace WindowsFormsApp1
             return true;
         }
 
+
         public bool _300606ToExcel(string Path)
         {
             //return;
@@ -324,7 +352,66 @@ namespace WindowsFormsApp1
             return true;
         }
 
-        public bool SN760756ToExcel(string Path)
+        public bool SN760756ToExcel(string filePath)
+        {
+            
+                try {
+
+                    var engine = new FileHelperEngine<TruckCSV>();
+                    var result = engine.ReadFile(filePath);
+                    
+                    // result is now an array of RekordCSV
+
+                    foreach (TruckCSV csvTruck in result)
+                    {
+                        csvTruck.registration = csvTruck.registration.Replace(" ", string.Empty);
+
+
+                    //THIS IS KAROL'S CODE
+
+                    foreach (Truck element in TruckData)
+                    {
+                        if (element.Registration == csvTruck.registration)//this is working, just lookin bad
+                        {
+                            //this is so fucking bad i don't even
+                            String ProductName = csvTruck.product;
+
+                            if (match(ProductName, new string[] { "Olej", "Diesel", "ON" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
+                            {
+                                element.DieselL += (float)csvTruck.quantity;
+                                element.DieselCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
+                            }
+                            else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway", "Eurowinieta", "drogowe" }) && csvTruck.netto_price >= 0)
+                            {
+                                element.RoadTax += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
+                            }
+                            else if (match(ProductName, new string[] { "AdBlue" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
+                            {
+                                element.AdblueL += (float)csvTruck.quantity;
+                                element.AdblueCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
+                            }
+                            else if (csvTruck.netto_price >= 0)
+                            {
+                                element.OtherCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
+                            }
+                        }
+                    }
+                    //END OF PIETRZAKOWY KOD
+
+                }
+
+                }
+                catch (Exception e) {
+                    System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + filePath);
+                    return false;
+                }
+
+            return true;
+        }
+
+
+        //mothafuckin' deprecated
+        public bool SN760756ToExcel_XLSX(string Path)
         {
             //FIXME
             //return;
@@ -344,6 +431,7 @@ namespace WindowsFormsApp1
                 MyExcel.Workbooks.Open(Path);
                 MyWorksheet = MyExcel.Worksheets.Item[1];
                 MyCells = MyWorksheet.Cells;
+
             } catch(Exception e)
             {
                 System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + Path);
@@ -398,10 +486,9 @@ namespace WindowsFormsApp1
         public bool match(String ProductName, string[] Tab)
         {
             bool check = false;
-
             foreach (string element in Tab)
             {
-                if (ProductName.Contains(element))
+                if (ProductName.ToLower().Contains(element.ToLower()))
                 {
                     check = true;
                 }
