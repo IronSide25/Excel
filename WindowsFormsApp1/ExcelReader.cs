@@ -161,6 +161,77 @@ namespace WindowsFormsApp1
 
         }
 
+        public bool extraInvoiceToExcel(string Path)
+        {
+            //Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
+            Microsoft.Office.Interop.Excel.Range MyCells;
+
+            try
+            {
+                MyExcel.Workbooks.Open(Path);
+                MyWorksheet = MyExcel.Worksheets.Item[1];
+                MyCells = MyWorksheet.Cells;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + Path);
+                return false;
+            }
+
+            /*
+            * A - rejestracja
+            * B - koszt adblue
+            * C - koszt diesel
+            * D - ilość adblue
+            * E - ilość diesel
+            * F - podatek drogowy
+            * G - inne koszty
+           */
+
+            int RegistrationColumn = 1;
+            int adBlueCostColumn = 2;
+            int dieselCostColumn = 3;
+            int adBlueAmountColumn = 4;
+            int dieselAmountColumn = 5;
+            int roadTaxColumn = 6;
+            int otherCostsColumn = 7;
+
+            int CurrentRow = 2;
+            int iRowCount = MyWorksheet.UsedRange.Rows.Count;
+
+            while (CurrentRow <= iRowCount)
+            {
+
+
+                String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
+                Reg = Reg.Replace(" ", string.Empty);
+
+                System.Windows.Forms.MessageBox.Show(Reg);
+
+
+                foreach (Truck element in TruckData)
+                {
+                    if (element.Registration == Reg) //this is working, just lookin bad
+                    {
+                        element.AdblueCost += MyCells.Item[CurrentRow, adBlueCostColumn].Value;
+                        element.DieselCost += MyCells.Item[CurrentRow, dieselCostColumn].Value;
+
+                        element.AdblueL += MyCells.Item[CurrentRow, adBlueAmountColumn].Value;
+                        element.DieselL += MyCells.Item[CurrentRow, dieselAmountColumn].Value;
+
+                        element.RoadTax += MyCells.Item[CurrentRow, roadTaxColumn].Value;
+                        element.OtherCost += MyCells.Item[CurrentRow, otherCostsColumn].Value;
+                    }
+                }
+                CurrentRow++;
+
+
+            }
+
+            return true;
+        }
+
         public bool ExportGridDataToExcel(string Path)
         {
             string RegistrationColumn = "B";
@@ -238,7 +309,7 @@ namespace WindowsFormsApp1
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
 
-            try { 
+            try {
             MyExcel.Workbooks.Open(Path);
             MyWorksheet = MyExcel.Worksheets.Item[1];
             MyCells = MyWorksheet.Cells;

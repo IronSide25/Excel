@@ -13,6 +13,7 @@ namespace WindowsFormsApp1
         JUST_NUMBERS,
         F_AND_NUMBERS,
         SN_AND_NUMBERS,
+        EXTRA_INVOICE,
         ERROR
     }
 
@@ -20,7 +21,6 @@ namespace WindowsFormsApp1
     {
         public static ExcelType recognizeExcel(string pathToExcel)
         {
-            
 
             string extension = System.IO.Path.GetExtension(pathToExcel).ToLower();
             if (extension.Contains( "csv"))
@@ -31,6 +31,11 @@ namespace WindowsFormsApp1
             //    return ExcelType.SN_AND_NUMBERS;
 
             // nah
+
+            
+            // but this should exist
+            if (System.IO.Path.GetFileName(pathToExcel).ToLower().Contains("extra"))
+                return ExcelType.EXTRA_INVOICE;
 
 
             else if (pathToExcel.Contains("ExportGridData"))

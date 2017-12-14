@@ -167,7 +167,6 @@ namespace WindowsFormsApp1
                 bool stepPerformedSuccessfully = true;
 
                 switch (excelType)
-
                 {
                     case ExcelType.EXPORT_GRID_DATA:
 
@@ -184,9 +183,16 @@ namespace WindowsFormsApp1
                         stepPerformedSuccessfully = excelReader.SN760756ToExcel(path);
                         break;
 
+                    case ExcelType.EXTRA_INVOICE:
+                        stepPerformedSuccessfully = excelReader.extraInvoiceToExcel(path);
+                        break;
+
                     case ExcelType.ERROR:
                         cancelGeneration(excelReader);
                         return;
+                    
+
+                    
 
                     default:
                         break;
@@ -261,8 +267,8 @@ namespace WindowsFormsApp1
 
                 ExcelWorkSheet.Cells[1, 1] = "Rejestracja";
                 ExcelWorkSheet.Cells[1, 2] = "Koszt AdBlue";
-                ExcelWorkSheet.Cells[1, 3] = "Ilosc AdBlue";
-                ExcelWorkSheet.Cells[1, 4] = "Diesel koszt";
+                ExcelWorkSheet.Cells[1, 3] = "Diesel koszt";
+                ExcelWorkSheet.Cells[1, 4] = "Ilosc AdBlue";
                 ExcelWorkSheet.Cells[1, 5] = "Ilosc Diesel";
                 ExcelWorkSheet.Cells[1, 6] = "Podatek Drogowy";
                 ExcelWorkSheet.Cells[1, 7] = "Inne Koszty";
