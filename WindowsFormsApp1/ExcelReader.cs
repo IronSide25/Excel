@@ -207,7 +207,7 @@ namespace WindowsFormsApp1
                 String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
                 Reg = Reg.Replace(" ", string.Empty);
 
-                System.Windows.Forms.MessageBox.Show(Reg);
+               // System.Windows.Forms.MessageBox.Show(Reg);
 
 
                 foreach (Truck element in TruckData)
@@ -623,37 +623,102 @@ namespace WindowsFormsApp1
                 ExcelWorkSheet.Cells[1, 7] = "Podatek Drogowy";
                 ExcelWorkSheet.Cells[1, 8] = "Inne Koszty";
 
+
+                ExcelWorkSheet.Cells[1, 9] = "Litry Diesel / 100 km";
+                ExcelWorkSheet.Cells[1, 10] = "Litry AdBlue / 100 km";
+                ExcelWorkSheet.Cells[1, 11] = "EUR Diesel / 100 km";
+                ExcelWorkSheet.Cells[1, 12] = "EUR AdBlue / 100 km";
+                ExcelWorkSheet.Cells[1, 13] = "Opłaty autostradowe / 100 km";
+                ExcelWorkSheet.Cells[1, 14] = "Inne opłaty / 100 km";
+                ExcelWorkSheet.Cells[1, 15] = "Wszystkie koszty / 100 km";
+
                 foreach (Truck element in TruckData)
                 {
                     String R = element.GetRegistration();
                     ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = R;
                     CurrentColumn++;
-                    float K = element.GetKilometers();
+
+                    double K = Math.Round((double)element.Kilometers, 2);
                     ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
                     CurrentColumn++;
-                    K = element.AdblueCost;
+
+                    K = Math.Round((double)element.AdblueCost, 2);
                     ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
                     CurrentColumn++;
-                    K = element.AdblueL;
+
+                    K = Math.Round((double)element.AdblueL, 2);
                     ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
                     CurrentColumn++;
-                    K = element.DieselCost;
+
+                    K = Math.Round((double)element.DieselCost, 2);
                     ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
                     CurrentColumn++;
-                    K = element.DieselL;
+
+                    K = Math.Round((double)element.DieselL, 2);
                     ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
                     CurrentColumn++;
-                    K = element.RoadTax;
+
+                    K = Math.Round((double)element.RoadTax, 2);
                     ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
                     CurrentColumn++;
-                    K = element.OtherCost;
+
+                    K = Math.Round((double)element.OtherCost, 2);
                     ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+
+                    //  PER 100
+
+                    // LDiesel / 100 //TODO:
+                    K = Math.Round((double)(element.DieselL / (float)element.Kilometers * 100.0f), 2);
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+
+                    // LAdBlue / 100
+                    K = Math.Round((double)(element.AdblueL / (float)element.Kilometers * 100.0f), 2);
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+
+                    // Eur Diesel / 100
+                    K = Math.Round((double)(element.DieselCost / (float)element.Kilometers * 100.0f), 2);
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+
+                    // Eur AdBlue / 100
+                    K = Math.Round((double)(element.AdblueCost / (float)element.Kilometers * 100.0f), 2);
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+
+                    // RoadTax / 100
+                    K = Math.Round((double)(element.RoadTax / (float)element.Kilometers * 100.0f), 2);
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+
+                    // Other / 100
+                    K = Math.Round((double)(element.OtherCost / (float)element.Kilometers * 100.0f), 2);
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    CurrentColumn++;
+
+                    // All / 100
+                    K = Math.Round((double)((
+
+                        element.DieselL + element.DieselCost 
+                        + element.AdblueL + element.AdblueCost
+                        + element.OtherCost + element.RoadTax)
+
+                        / (float)element.Kilometers * 100.0f), 2);
+                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+
                     CurrentColumn = 1;
                     CurrentRow++;
 
                 }
+
+                //cosmetics
                 ExcelWorkBook.Worksheets[1].Name = "Raport";//Renaming the Sheet1 to MySheet
-                
+                Microsoft.Office.Interop.Excel.Range aRange = ExcelWorkSheet.get_Range("A1", "O1");
+                aRange.Columns.AutoFit();
+
+
                 ExcelWorkBook.SaveAs(Path);
                 ExcelWorkBook.Close(false);
                 ExcelApp.Quit();

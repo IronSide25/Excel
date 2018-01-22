@@ -8,13 +8,13 @@ namespace WindowsFormsApp1
 {
     enum ExcelType
     {
-        TRUCK_DATA,
-        EXPORT_GRID_DATA,
-        JUST_NUMBERS,
-        F_AND_NUMBERS,
-        SN_AND_NUMBERS,
-        EXTRA_INVOICE,
-        ERROR
+        TRUCK_DATA, //check
+        EXPORT_GRID_DATA, //check
+        JUST_NUMBERS, //check
+        F_AND_NUMBERS, //check
+        SN_AND_NUMBERS, //check
+        EXTRA_INVOICE, //extra check
+        ERROR //shh, pls don't exist
     }
 
     class ExcelRecogniser
@@ -45,12 +45,6 @@ namespace WindowsFormsApp1
                 return ExcelType.TRUCK_DATA;
 
 
-            if (!extension.Contains("xls")) {
-                System.Windows.Forms.MessageBox.Show(
-                    "Nie udało się rozpoznać " + pathToExcel + ". Sprawdź czy plik jest poprawny"
-                    );
-                return ExcelType.ERROR;
-            }
 
             string firstCell = "";
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
@@ -73,6 +67,7 @@ namespace WindowsFormsApp1
                 System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + pathToExcel);
                 return ExcelType.ERROR;
             }
+             
 
 
             switch (firstCell)
@@ -92,6 +87,9 @@ namespace WindowsFormsApp1
                 case "Karte;Kennzeichen;Fahrer;km-Stand;Lieferdatum;Lieferzeit;Beleg-Nr;Erfassungsart;Land;SST;Name;Warenart;Menge;Preis;Betrag;Nachlass incl. USt;Fee incl. USt;Wert incl. USt;;Wert incl. USt;;USt;Betrag USt;Nachlass excl. USt;Fee excl. USt;Wert excl. USt;;Wert excl. USt;;Rechnung;Kostenstelle;":
                     return ExcelType.SN_AND_NUMBERS;
                     //but this should never happen
+                    break;
+                case "Rejestracja":
+                    return ExcelType.EXTRA_INVOICE;
                     break;
 
                 default:

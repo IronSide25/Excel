@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.status = new System.Windows.Forms.Label();
             this.filesList = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -145,8 +146,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.filesList);
             this.Controls.Add(this.status);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Generator Raportów";
             this.ResumeLayout(false);
             this.PerformLayout();
 

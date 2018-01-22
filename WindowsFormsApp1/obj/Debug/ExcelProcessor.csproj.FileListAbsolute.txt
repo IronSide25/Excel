@@ -35,3 +35,5 @@ D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.
 D:\DATA\Programming\Visual C#\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
 S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\FileHelpers.dll
 S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\FileHelpers.xml
+S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.CodeAnalysisLog.xml
+S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.lastcodeanalysissucceeded
