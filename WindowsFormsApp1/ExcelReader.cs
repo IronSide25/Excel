@@ -667,46 +667,48 @@ namespace WindowsFormsApp1
                     CurrentColumn++;
 
                     //  PER 100
+                    if(element.Kilometers != 0)
+                    {
+                        // LDiesel / 100 //TODO:
+                        K = Math.Round((double)(element.DieselL / (float)element.Kilometers * 100.0f), 2);
+                        ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                        CurrentColumn++;
 
-                    // LDiesel / 100 //TODO:
-                    K = Math.Round((double)(element.DieselL / (float)element.Kilometers * 100.0f), 2);
-                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
-                    CurrentColumn++;
+                        // LAdBlue / 100
+                        K = Math.Round((double)(element.AdblueL / (float)element.Kilometers * 100.0f), 2);
+                        ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                        CurrentColumn++;
 
-                    // LAdBlue / 100
-                    K = Math.Round((double)(element.AdblueL / (float)element.Kilometers * 100.0f), 2);
-                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
-                    CurrentColumn++;
+                        // Eur Diesel / 100
+                        K = Math.Round((double)(element.DieselCost / (float)element.Kilometers * 100.0f), 2);
+                        ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                        CurrentColumn++;
 
-                    // Eur Diesel / 100
-                    K = Math.Round((double)(element.DieselCost / (float)element.Kilometers * 100.0f), 2);
-                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
-                    CurrentColumn++;
+                        // Eur AdBlue / 100
+                        K = Math.Round((double)(element.AdblueCost / (float)element.Kilometers * 100.0f), 2);
+                        ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                        CurrentColumn++;
 
-                    // Eur AdBlue / 100
-                    K = Math.Round((double)(element.AdblueCost / (float)element.Kilometers * 100.0f), 2);
-                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
-                    CurrentColumn++;
+                        // RoadTax / 100
+                        K = Math.Round((double)(element.RoadTax / (float)element.Kilometers * 100.0f), 2);
+                        ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                        CurrentColumn++;
 
-                    // RoadTax / 100
-                    K = Math.Round((double)(element.RoadTax / (float)element.Kilometers * 100.0f), 2);
-                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
-                    CurrentColumn++;
+                        // Other / 100
+                        K = Math.Round((double)(element.OtherCost / (float)element.Kilometers * 100.0f), 2);
+                        ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                        CurrentColumn++;
 
-                    // Other / 100
-                    K = Math.Round((double)(element.OtherCost / (float)element.Kilometers * 100.0f), 2);
-                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
-                    CurrentColumn++;
+                        // All / 100
+                        K = Math.Round((double)((
 
-                    // All / 100
-                    K = Math.Round((double)((
+                            element.DieselL + element.DieselCost 
+                            + element.AdblueL + element.AdblueCost
+                            + element.OtherCost + element.RoadTax)
 
-                        element.DieselL + element.DieselCost 
-                        + element.AdblueL + element.AdblueCost
-                        + element.OtherCost + element.RoadTax)
-
-                        / (float)element.Kilometers * 100.0f), 2);
-                    ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                            / (float)element.Kilometers * 100.0f), 2);
+                        ExcelWorkSheet.Cells[CurrentRow, CurrentColumn] = K;
+                    }
 
                     CurrentColumn = 1;
                     CurrentRow++;

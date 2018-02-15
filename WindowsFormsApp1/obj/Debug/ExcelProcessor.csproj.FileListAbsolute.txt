@@ -37,3 +37,17 @@ S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\FileHelpers.dll
 S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\FileHelpers.xml
 S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.CodeAnalysisLog.xml
 S:\Code\C#\Excel\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.lastcodeanalysissucceeded
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\bin\Debug\Generator Raportów.exe.config
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\bin\Debug\Generator Raportów.exe
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\bin\Debug\Generator Raportów.pdb
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\bin\Debug\FileHelpers.dll
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\bin\Debug\Newtonsoft.Json.dll
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\bin\Debug\FileHelpers.xml
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\bin\Debug\Newtonsoft.Json.xml
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csprojResolveAssemblyReference.cache
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form1.resources
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csproj.GenerateResource.Cache
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\obj\Debug\ExcelProcessor.csproj.CoreCompileInputs.cache
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\obj\Debug\Generator Raportów.exe
+C:\Users\mateu\Source\Repos\Excel\WindowsFormsApp1\obj\Debug\Generator Raportów.pdb

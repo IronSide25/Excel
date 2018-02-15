@@ -212,8 +212,10 @@ namespace WindowsFormsApp1
 
             }
 
+            try{
             if (File.Exists(outputPath))
                 File.Delete(outputPath);
+            
 
             excelReader.SaveOutputToFile(outputPath);
             excelProcessingProgress.PerformStep();
@@ -226,6 +228,12 @@ namespace WindowsFormsApp1
             status.Text = "Upuść pliki tutaj";
             excelProcessingProgress.Value = 0;
             Process.Start(outputPath);
+
+            }catch (Exception exception){
+                MessageBox.Show("Nie udało się zapisać pliku, ponieważ plik wybrany jako lokalizacja zapisu jest otwarty w innym programie");
+                excelProcessingProgress.Value = 0;
+
+            }
 
 
         }
