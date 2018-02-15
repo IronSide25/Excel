@@ -144,7 +144,7 @@ namespace WindowsFormsApp1
                 if (excelType == ExcelType.TRUCK_DATA)
                 {
                     //MessageBox.Show("sending " + path + ", month: '" + selectedMonth + "'");
-                    if (!excelReader.TruckDataToExcel("4", path))
+                    if (!excelReader.TruckDataToExcel(selectedMonth, path))
                     {
                         cancelGeneration(excelReader);
 
