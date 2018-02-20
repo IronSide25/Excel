@@ -239,7 +239,7 @@ namespace WindowsFormsApp1
             string ProductColumn = "G";
             string QuantityColumn = "H";
             string NettoPriceColumn = "M";
-            string CurrencyColumn = "I";
+            //string CurrencyColumn = "I";
 
             //Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
@@ -271,20 +271,20 @@ namespace WindowsFormsApp1
                         if (match(ProductName, new string[] { "Olej", "Diesel" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
                             element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
+                            element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
                         }
                         else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway" }) && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
-                            element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
+                            element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value ;
                         }
                         else if (match(ProductName, new string[] { "AdBlue" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
                             element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
+                            element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
                         }
                         else if(MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0) 
                         {
-                            element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
+                            element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
                         }
                     }
                 }
@@ -369,7 +369,7 @@ namespace WindowsFormsApp1
             string RegistrationColumn = "X";
             string ProductColumn = "E";
             string QuantityColumn = "F";
-            string NettoPriceColumn = "P";
+            string NettoPriceColumn = "T";
             string CurrencyColumn = "O";
 
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
@@ -401,20 +401,20 @@ namespace WindowsFormsApp1
                         if (match(ProductName, new string[] { "Olej", "Diesel" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
                             element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
+                            element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value ;
                         }
                         else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway" }) && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
-                            element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
+                            element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value ;
                         }
                         else if (match(ProductName, new string[] { "AdBlue" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
                             element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
+                            element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value ;
                         }
                         else if(MyCells.Item[CurrentRow, NettoPriceColumn].Value>=0) 
                         {
-                            element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
+                            element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value ;
                         }
                     }
                 }
