@@ -6,4 +6,3 @@ obj/
 .vs/
 packages/
 *.cache
-WindowsFormsApp1/obj/Debug/ExcelProcessor.csproj.CoreCompileInputs.cache

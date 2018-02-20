@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FileHelpers;
 
+
 namespace WindowsFormsApp1
 {
     [IgnoreFirst(5)]
@@ -12,6 +13,7 @@ namespace WindowsFormsApp1
     [DelimitedRecord(";")]
     public class TruckCSV
     {
+        int aasd = 2;
         public string a, registration, c, d, e, f, g, h, i, j, k;
         public string product;
 
