@@ -1,5 +1,7 @@
-WindowsFormsApp1/bin/
+WindowsFormsApp1/bin/*
+WindowsFormsApp1/obj/*
 bin/
 obj/
 .vs/
 packages/
+*.cache
