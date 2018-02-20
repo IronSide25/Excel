@@ -13,7 +13,6 @@ namespace WindowsFormsApp1
     [DelimitedRecord(";")]
     public class TruckCSV
     {
-        int aasd = 2;
         public string a, registration, c, d, e, f, g, h, i, j, k;
         public string product;
 
