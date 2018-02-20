@@ -1,9 +1,11 @@
 WindowsFormsApp1/bin/*
-WindowsFormsApp1/obj/Debug/
-WindowsFormsApp1/obj/Release/
+WindowsFormsApp1/obj/
+# WindowsFormsApp1/obj/Debug/
+# WindowsFormsApp1/obj/Release/
 bin/
 obj/
 .vs/
 packages/
 *.cache
-WindowsFormsApp1/obj/Debug/ExcelProcessor.csproj.CoreCompileInputs.cache
+.gitignore~
+..gitignore.un~
