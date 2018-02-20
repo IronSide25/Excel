@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApp1
 {
+    class BigFuckingChange
+    {
+        public static int bigFuckingMethod()
+        {
+            return 5; //that's a big fucking number
+        }
+    }
     enum ExcelType
     {
         TRUCK_DATA, //check
