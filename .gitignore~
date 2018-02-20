@@ -1,5 +1,4 @@
 WindowsFormsApp1/bin/
 bin/
 obj/
-.vs/
-packages/
+.vs/*
