@@ -183,7 +183,7 @@ namespace WindowsFormsApp1
 
             this.dieselPrice += MyCells.Cells[2, 1].Value;
             this.adBluePrice += MyCells[2, 2].Value;
-            System.Windows.Forms.MessageBox.Show("Test " + this.adBluePrice);
+           // System.Windows.Forms.MessageBox.Show("Test " + this.adBluePrice);
             /*
             * A - rejestracja
             * B - koszt adblue
@@ -341,7 +341,7 @@ namespace WindowsFormsApp1
                         if (match(ProductName, new string[] { "1", "2" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >=0)
                         {
                             element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            //element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            element.DieselCost += MyCells.Item[CurrentRow, QuantityColumn].Value * dieselPrice;
                             //currency
                         }
                         else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway" }))
@@ -352,7 +352,7 @@ namespace WindowsFormsApp1
                         else if (match(ProductName, new string[] { "5" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0)
                         {
                             element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                            //element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+                            element.AdblueCost += MyCells.Item[CurrentRow, QuantityColumn].Value * adBluePrice;
                             //currency
                         }
                         else  //OTHER COST TO MAJA BYC M.IN. NIEOPISANE??
