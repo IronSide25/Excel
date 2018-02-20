@@ -106,10 +106,14 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            DateTime today = DateTime.Today;
+            string dateString = today.ToString("dd-MM-yyyy");
+
             string outputPath = "";
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.FileName = "zestawienie_ciężarówek.xlsx";
+            saveFileDialog1.FileName = "zestawienie_ciężarówek_" + dateString + ".xlsx";
             saveFileDialog1.Filter = "Arkusz Programu Microsoft Excel (*.xlsx)|*.xlsx";
+
             saveFileDialog1.FilterIndex = 2;
             saveFileDialog1.RestoreDirectory = true;
 
@@ -150,9 +154,24 @@ namespace WindowsFormsApp1
 
                         return;
                     }
+                }if (excelType == ExcelType.EXTRA_INVOICE)
+                {
+                    if(!excelReader.extraInvoiceToExcel(path))
+                    {
+                        cancelGeneration(excelReader);
+                    }
+
+
                 }
                 excelProcessingProgress.PerformStep();
             }
+
+            /*
+            //thats an old code, it's here for reasons
+                    case ExcelType.EXTRA_INVOICE:
+                        stepPerformedSuccessfully = excelReader.extraInvoiceToExcel(path);
+                        break;
+             */
 
 
 
@@ -181,10 +200,6 @@ namespace WindowsFormsApp1
                         break;
                     case ExcelType.SN_AND_NUMBERS:
                         stepPerformedSuccessfully = excelReader.SN760756ToExcel(path);
-                        break;
-
-                    case ExcelType.EXTRA_INVOICE:
-                        stepPerformedSuccessfully = excelReader.extraInvoiceToExcel(path);
                         break;
 
                     case ExcelType.ERROR:
@@ -273,14 +288,16 @@ namespace WindowsFormsApp1
                 int CurrentRow = 2;
                 int CurrentColumn = 1;
 
-                ExcelWorkSheet.Cells[1, 1] = "Rejestracja";
-                ExcelWorkSheet.Cells[1, 2] = "Koszt AdBlue";
-                ExcelWorkSheet.Cells[1, 3] = "Diesel koszt";
-                ExcelWorkSheet.Cells[1, 4] = "Ilosc AdBlue";
-                ExcelWorkSheet.Cells[1, 5] = "Ilosc Diesel";
-                ExcelWorkSheet.Cells[1, 6] = "Podatek Drogowy";
-                ExcelWorkSheet.Cells[1, 7] = "Inne Koszty";
-                Microsoft.Office.Interop.Excel.Range aRange = ExcelWorkSheet.get_Range("A1", "G1");
+                ExcelWorkSheet.Cells[3, 1] = "Rejestracja";
+                ExcelWorkSheet.Cells[3, 2] = "Koszt AdBlue";
+                ExcelWorkSheet.Cells[3, 3] = "Diesel koszt";
+                ExcelWorkSheet.Cells[3, 4] = "Ilosc AdBlue";
+                ExcelWorkSheet.Cells[3, 5] = "Ilosc Diesel";
+                ExcelWorkSheet.Cells[3, 6] = "Podatek Drogowy";
+                ExcelWorkSheet.Cells[3, 7] = "Inne Koszty";
+                ExcelWorkSheet.Cells[1, 1] = "Cena Diesel";
+                ExcelWorkSheet.Cells[1, 2] = "Cena AdBlue";
+                Microsoft.Office.Interop.Excel.Range aRange = ExcelWorkSheet.get_Range("A1", "Z6");
                 aRange.Columns.AutoFit();
                 ExcelWorkBook.Worksheets[1].Name = "Rachunek extra";
 

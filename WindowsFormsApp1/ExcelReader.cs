@@ -69,6 +69,7 @@ namespace WindowsFormsApp1
 
     public class ExcelReader
     {
+        double dieselPrice = 0, adBluePrice = 0;
         List<Truck> TruckData = new List<Truck>();
         List<String> Alphabet = new List<String>();
         Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
@@ -180,6 +181,9 @@ namespace WindowsFormsApp1
                 return false;
             }
 
+            this.dieselPrice += MyCells.Cells[2, 1].Value;
+            this.adBluePrice += MyCells[2, 2].Value;
+            System.Windows.Forms.MessageBox.Show("Test " + this.adBluePrice);
             /*
             * A - rejestracja
             * B - koszt adblue
@@ -198,7 +202,7 @@ namespace WindowsFormsApp1
             int roadTaxColumn = 6;
             int otherCostsColumn = 7;
 
-            int CurrentRow = 2;
+            int CurrentRow = 4;
             int iRowCount = MyWorksheet.UsedRange.Rows.Count;
 
             while (CurrentRow <= iRowCount)
