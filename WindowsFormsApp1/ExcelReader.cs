@@ -428,6 +428,7 @@ namespace WindowsFormsApp1
             return true;
         }
 
+        //THIS USES THE CURRENCY CONVERTER
         public bool SN760756ToExcel(string filePath)
         {
 
@@ -484,78 +485,6 @@ namespace WindowsFormsApp1
 
             return true;
         }
-
-
-        //mothafuckin' deprecated
-        public bool SN760756ToExcel_xlsx(string Path)
-        {
-            //FIXME
-            //return;
-
-            string RegistrationColumn = "B";
-            string ProductColumn = "L";
-            string QuantityColumn = "M";
-            string NettoPriceColumn = "Z";
-            string CurrencyColumn = "AA";
-
-
-            Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
-            Microsoft.Office.Interop.Excel.Range MyCells;
-
-            try
-            {
-                MyExcel.Workbooks.Open(Path);
-                MyWorksheet = MyExcel.Worksheets.Item[1];
-                MyCells = MyWorksheet.Cells;
-
-            } catch(Exception e)
-            {
-                System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + Path);
-                return false;
-            }
-
-            int CurrentRow = 6;
-            int iRowCount = MyWorksheet.UsedRange.Rows.Count;
-
-            while (CurrentRow <= iRowCount)
-            {
-                if (MyCells.Item[CurrentRow, RegistrationColumn].Value != null)
-                {
-                    String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
-                    Reg = Reg.Replace(" ", string.Empty);
-
-                    foreach (Truck element in TruckData)
-                    {
-                        if (element.Registration == Reg)//this is working, just lookin bad
-                        {
-                            String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
-                            if (match(ProductName, new string[] { "Olej", "Diesel", "ON" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
-                            {
-                                element.DieselL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                                element.DieselCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value*currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
-                            }
-                            else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway", "Eurowinieta", "drogowe" }) && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
-                            {
-                                element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
-                            }
-                            else if (match(ProductName, new string[] { "AdBlue" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
-                            {
-                                element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
-                                element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
-                            }
-                            else if(MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0) 
-                            {
-                                element.OtherCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value * currencyConverter.getRateOf(MyCells.Item[CurrentRow, CurrencyColumn].Value);
-                            }
-                        }
-                    }
-                }
-                CurrentRow++;
-            }
-
-            return true;
-        }
-
 
 
 
