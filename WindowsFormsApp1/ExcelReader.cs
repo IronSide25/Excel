@@ -33,7 +33,6 @@ namespace WindowsFormsApp1
     // CurrencyColumn = "AA";
 
 
-
     public class Truck
     {
         public String Registration;
@@ -67,16 +66,54 @@ namespace WindowsFormsApp1
 
     }
 
+
+    public class TruckNotFound : Truck
+    {
+        public string filename;
+        public int line;
+        public string otherData;
+
+        public TruckNotFound(string filename) : base()
+        {
+            this.filename = filename;
+        }
+
+        public string getFilename()
+        {
+            return filename;
+        }
+
+        public int getLine()
+        {
+            return line;
+        }
+
+        public string getOtherData()
+        {
+            return otherData;
+        }
+    }
+
     public class ExcelReader
     {
         double dieselPrice = 0, adBluePrice = 0;
         List<Truck> TruckData = new List<Truck>();
         List<String> Alphabet = new List<String>();
         Microsoft.Office.Interop.Excel.Application MyExcel = new Microsoft.Office.Interop.Excel.Application();
+
+
         CurrencyConverter currencyConverter;
+
+        
+
+        List<TruckNotFound> notFoundTrucks = new List<TruckNotFound>();
 
         public ExcelReader()
         {
+            //excel app settings
+            MyExcel.DisplayAlerts = false;
+            //MyExcel.AutomationSecurity = Microsoft.Office.Core.MsoAutomationSecurity.msoAutomationSecurityForceDisable;
+
             currencyConverter = new CurrencyConverter();
             if(currencyConverter.hasBeenConstructedInAProperWay() == false)
             {
@@ -159,6 +196,8 @@ namespace WindowsFormsApp1
                 KilometersStartRow++;
             }
 
+            closeAllWorkbooksDontKillApp();
+
             return true;
 
         }
@@ -234,6 +273,8 @@ namespace WindowsFormsApp1
 
             }
 
+            closeAllWorkbooksDontKillApp();
+
             return true;
         }
 
@@ -267,10 +308,16 @@ namespace WindowsFormsApp1
                 String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
                 Reg = Reg.Replace(" ", string.Empty);
 
+
+                //checks if any truck was found
+                bool truckWithThisRegistrationFound = false;
+
                 foreach (Truck element in TruckData)
                 {
                     if (element.Registration == Reg)//this is working, just lookin bad
                     {
+                        truckWithThisRegistrationFound = true;
+
                         String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
                         if (match(ProductName, new string[] { "Olej", "Diesel" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
@@ -292,10 +339,25 @@ namespace WindowsFormsApp1
                         }
                     }
                 }
+
+                //if there was no truck with this registration number
+                if(!truckWithThisRegistrationFound)
+                {
+                    TruckNotFound truck = new TruckNotFound(Path);
+                    truck.line = CurrentRow;
+                    truck.Registration = Reg;
+                    truck.otherData += "Produkt: " + MyCells.Item[CurrentRow, ProductColumn].Value + ", cena: " + MyCells.Item[CurrentRow, NettoPriceColumn].Value;
+
+                    notFoundTrucks.Add(truck);
+                   
+                }
                 CurrentRow++;
 
 
             }
+
+
+            closeAllWorkbooksDontKillApp();
 
             return true;
         }
@@ -318,7 +380,8 @@ namespace WindowsFormsApp1
             MyExcel.Workbooks.Open(Path);
             MyWorksheet = MyExcel.Worksheets.Item[1];
             MyCells = MyWorksheet.Cells;
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + Path);
                 return false;
@@ -333,10 +396,16 @@ namespace WindowsFormsApp1
                 Reg = Reg.Replace(" ", string.Empty);
 
 
+                //checks if any truck was found
+                bool truckWithThisRegistrationFound = false;
+
                 foreach (Truck element in TruckData)
                 {
                     if (element.Registration == Reg)
                     {
+                        truckWithThisRegistrationFound = true;
+
+
                         String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
                         if (match(ProductName, new string[] { "1", "2" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >=0)
                         {
@@ -362,8 +431,24 @@ namespace WindowsFormsApp1
                         }
                     }
                 }
+
+                //if there was no truck with this registration number
+                if (!truckWithThisRegistrationFound)
+                {
+                    TruckNotFound truck = new TruckNotFound(Path);
+                    truck.line = CurrentRow;
+                    truck.Registration = Reg;
+                    truck.otherData += "Produkt: " + MyCells.Item[CurrentRow, ProductColumn].Value + ", ilość: " + MyCells.Item[CurrentRow, QuantityColumn].Value;
+
+                    notFoundTrucks.Add(truck);
+
+                }
+
                 CurrentRow++;
             }
+
+
+            closeAllWorkbooksDontKillApp();
 
             return true;
         }
@@ -397,10 +482,17 @@ namespace WindowsFormsApp1
                 String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
                 Reg = Reg.Replace(" ", string.Empty);
 
+                //checks if any truck was found
+                bool truckWithThisRegistrationFound = false;
+
+
                 foreach (Truck element in TruckData)
                 {
                     if (element.Registration == Reg)//this is working, just lookin bad
                     {
+                        truckWithThisRegistrationFound = true;
+
+
                         String ProductName = MyCells.Item[CurrentRow, ProductColumn].Value;
                         if (match(ProductName, new string[] { "Olej", "Diesel" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
@@ -422,8 +514,23 @@ namespace WindowsFormsApp1
                         }
                     }
                 }
+
+                //if there was no truck with this registration number
+                if (!truckWithThisRegistrationFound)
+                {
+                    TruckNotFound truck = new TruckNotFound(Path);
+                    truck.line = CurrentRow;
+                    truck.Registration = Reg;
+                    truck.otherData += "Produkt: " + MyCells.Item[CurrentRow, ProductColumn].Value + ", ilość: " + MyCells.Item[CurrentRow, QuantityColumn].Value;
+
+                    notFoundTrucks.Add(truck);
+                }
+
                 CurrentRow++;
             }
+
+
+            closeAllWorkbooksDontKillApp();
 
             return true;
         }
@@ -437,11 +544,14 @@ namespace WindowsFormsApp1
             var engine = new FileHelperEngine<TruckCSV>();
             var result = engine.ReadFile(filePath);
 
+            int currentRow = 5;
             // result is now an array of RekordCSV
 
             foreach (TruckCSV csvTruck in result)
             {
                 csvTruck.registration = csvTruck.registration.Replace(" ", string.Empty);
+                //checks if any truck was found
+                bool truckWithThisRegistrationFound = false;
 
 
                 //THIS IS KAROL'S CODE
@@ -450,6 +560,9 @@ namespace WindowsFormsApp1
                 {
                     if (element.Registration == csvTruck.registration)//this is working, just lookin bad
                     {
+                        truckWithThisRegistrationFound = true;
+
+
                         //this is so fucking bad i don't even
                         String ProductName = csvTruck.product;
 
@@ -473,15 +586,33 @@ namespace WindowsFormsApp1
                         }
                     }
                 }
+
+
                 //END OF PIETRZAKOWY KOD
+
+                //if there was no truck with this registration number
+                if (!truckWithThisRegistrationFound)
+                {
+                    TruckNotFound truck = new TruckNotFound(filePath);
+                    truck.line = currentRow;
+                    truck.Registration = csvTruck.registration;
+                    truck.otherData += "Produkt: " + csvTruck.product + ", cena: " + csvTruck.netto_price;
+
+                    notFoundTrucks.Add(truck);
+                }
+
+                currentRow++;
 
             }
 
-        //}
-                //catch (Exception e) {
-                 //   System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + filePath);
-                  //  return false;
-               // }
+            //}
+            //catch (Exception e) {
+            //   System.Windows.Forms.MessageBox.Show("Nie udało się otworzyć " + filePath);
+            //  return false;
+            // }
+
+
+            closeAllWorkbooksDontKillApp();
 
             return true;
         }
@@ -565,6 +696,9 @@ namespace WindowsFormsApp1
                 ExcelWorkSheet.Cells[1, 13] = "Opłaty autostradowe / 100 km";
                 ExcelWorkSheet.Cells[1, 14] = "Inne opłaty / 100 km";
                 ExcelWorkSheet.Cells[1, 15] = "Wszystkie koszty / 100 km";
+
+                
+
 
                 foreach (Truck element in TruckData)
                 {
@@ -655,6 +789,50 @@ namespace WindowsFormsApp1
                 aRange.Columns.AutoFit();
 
 
+                if (notFoundTrucks.Count != 0)
+                {
+                    //the worksheet with not found trucks
+                    ExcelWorkSheet = ExcelWorkBook.Sheets.Add(After: ExcelWorkBook.Sheets[ExcelWorkBook.Sheets.Count]);
+                    ExcelWorkSheet.Name = "Brakujące rejestracje";
+
+                    ExcelWorkSheet.Cells[1, 1] = "Plik";
+                    ExcelWorkSheet.Cells[1, 2] = "Linia";
+                    ExcelWorkSheet.Cells[1, 3] = "Rejestracja";
+                    ExcelWorkSheet.Cells[1, 4] = "Dodatkowe informacje";
+
+                    int currentRow = 2, currentColumn = 1;
+
+                    foreach (TruckNotFound element in notFoundTrucks)
+                    {
+                        String filename = element.getFilename();
+                        ExcelWorkSheet.Cells[currentRow, currentColumn] = filename;
+                        currentColumn++;
+
+                        int linia = element.getLine();
+                        ExcelWorkSheet.Cells[currentRow, currentColumn] = linia;
+                        currentColumn++;
+
+                        string registration = element.GetRegistration();
+                        ExcelWorkSheet.Cells[currentRow, currentColumn] = registration;
+                        currentColumn++;
+
+                        string extras = element.getOtherData();
+                        ExcelWorkSheet.Cells[currentRow, currentColumn] = extras;
+                        currentColumn++;
+
+
+
+                        currentRow++;
+                        currentColumn = 1;
+
+                    }
+
+                    Microsoft.Office.Interop.Excel.Range anotherRange = ExcelWorkSheet.get_Range("A:A", "O:O");
+                    anotherRange.Columns.AutoFit();
+
+                }
+
+
                 ExcelWorkBook.SaveAs(Path);
                 ExcelWorkBook.Close(false);
                 ExcelApp.Quit();
@@ -669,14 +847,18 @@ namespace WindowsFormsApp1
             }
         }
 
-
-        public void closeAll()
+        public void closeAllWorkbooksDontKillApp()
         {
-            foreach( Microsoft.Office.Interop.Excel.Workbook singleWorkbook in MyExcel.Workbooks)
+            foreach (Microsoft.Office.Interop.Excel.Workbook singleWorkbook in MyExcel.Workbooks)
             {
                 singleWorkbook.Close(false);
             }
+        }
 
+        public void closeAll()
+        {
+
+            closeAllWorkbooksDontKillApp();
             MyExcel.Quit();
         }
     }

@@ -246,6 +246,7 @@ namespace WindowsFormsApp1
 
             }catch (Exception exception){
                 MessageBox.Show("Nie udało się zapisać pliku, ponieważ plik wybrany jako lokalizacja zapisu jest otwarty w innym programie");
+                MessageBox.Show(exception.ToString());
                 excelProcessingProgress.Value = 0;
 
             }
