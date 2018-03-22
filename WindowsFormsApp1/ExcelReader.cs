@@ -305,9 +305,13 @@ namespace WindowsFormsApp1
 
             while (CurrentRow <= iRowCount)
             {
-                String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
-                Reg = Reg.Replace(" ", string.Empty);
-
+                String Reg = "";
+                try //because Excel converts csv's to xlsx's in a bad way
+                {
+                    Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
+                    Reg = Reg.Replace(" ", string.Empty);
+                }
+                catch (Exception e) { }
 
                 //checks if any truck was found
                 bool truckWithThisRegistrationFound = false;
