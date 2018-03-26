@@ -507,7 +507,7 @@ namespace WindowsFormsApp1
                         {
                             element.RoadTax += MyCells.Item[CurrentRow, NettoPriceColumn].Value ;
                         }
-                        else if (match(ProductName, new string[] { "AdBlue" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
+                        else if (match(ProductName, new string[] { "AdBlue", "Ad Blue" }) && MyCells.Item[CurrentRow, QuantityColumn].Value >= 0 && MyCells.Item[CurrentRow, NettoPriceColumn].Value >= 0)
                         {
                             element.AdblueL += MyCells.Item[CurrentRow, QuantityColumn].Value;
                             element.AdblueCost += MyCells.Item[CurrentRow, NettoPriceColumn].Value ;
@@ -570,16 +570,17 @@ namespace WindowsFormsApp1
                         //this is so fucking bad i don't even
                         String ProductName = csvTruck.product;
 
-                        if (match(ProductName, new string[] { "Olej", "Diesel", "ON" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
+                        if (match(ProductName, new string[] { "Olej", "Diesel", " ON" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
                         {
+                            System.Windows.Forms.MessageBox.Show(ProductName);
                             element.DieselL += (float)csvTruck.quantity;
                             element.DieselCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
                         }
-                        else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway", "Eurowinieta", "drogowe" }) && csvTruck.netto_price >= 0)
+                        else if (match(ProductName, new string[] { "Autostrada", "Podatek", "Road tax", "Eurovignette", "Motorway", "Eurowinieta", "drogowe", "elektroniczna" }) && csvTruck.netto_price >= 0)
                         {
                             element.RoadTax += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
                         }
-                        else if (match(ProductName, new string[] { "AdBlue" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
+                        else if (match(ProductName, new string[] { "AdBlue", "ad blue" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
                         {
                             element.AdblueL += (float)csvTruck.quantity;
                             element.AdblueCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
