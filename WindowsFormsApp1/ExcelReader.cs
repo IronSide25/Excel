@@ -208,6 +208,8 @@ namespace WindowsFormsApp1
             Microsoft.Office.Interop.Excel.Worksheet MyWorksheet;
             Microsoft.Office.Interop.Excel.Range MyCells;
 
+
+
             try
             {
                 MyExcel.Workbooks.Open(Path);
@@ -251,21 +253,33 @@ namespace WindowsFormsApp1
                 String Reg = MyCells.Item[CurrentRow, RegistrationColumn].Value;
                 Reg = Reg.Replace(" ", string.Empty);
 
-               // System.Windows.Forms.MessageBox.Show(Reg);
+               //System.Windows.Forms.MessageBox.Show(Reg);
 
 
                 foreach (Truck element in TruckData)
                 {
                     if (element.Registration == Reg) //this is working, just lookin bad
                     {
-                        element.AdblueCost += MyCells.Item[CurrentRow, adBlueCostColumn].Value;
-                        element.DieselCost += MyCells.Item[CurrentRow, dieselCostColumn].Value;
+                        /*
+                         * TODO: write a method for performing this kind of sanity checks..?
+                         */ 
+                        if (MyCells.Item[CurrentRow, adBlueCostColumn].Value != null)
+                            element.AdblueCost += MyCells.Item[CurrentRow, adBlueCostColumn].Value;
 
-                        element.AdblueL += MyCells.Item[CurrentRow, adBlueAmountColumn].Value;
-                        element.DieselL += MyCells.Item[CurrentRow, dieselAmountColumn].Value;
+                        if (MyCells.Item[CurrentRow, dieselCostColumn].Value != null)
+                            element.DieselCost += MyCells.Item[CurrentRow, dieselCostColumn].Value;
 
-                        element.RoadTax += MyCells.Item[CurrentRow, roadTaxColumn].Value;
-                        element.OtherCost += MyCells.Item[CurrentRow, otherCostsColumn].Value;
+                        if (MyCells.Item[CurrentRow, adBlueAmountColumn].Value != null)
+                            element.AdblueL += MyCells.Item[CurrentRow, adBlueAmountColumn].Value;
+
+                        if (MyCells.Item[CurrentRow, dieselAmountColumn].Value != null)
+                            element.DieselL += MyCells.Item[CurrentRow, dieselAmountColumn].Value;
+
+                        if (MyCells.Item[CurrentRow, roadTaxColumn].Value != null)
+                            element.RoadTax += MyCells.Item[CurrentRow, roadTaxColumn].Value;
+
+                        if (MyCells.Item[CurrentRow, otherCostsColumn].Value != null)
+                            element.OtherCost += MyCells.Item[CurrentRow, otherCostsColumn].Value;
                     }
                 }
                 CurrentRow++;
@@ -572,7 +586,6 @@ namespace WindowsFormsApp1
 
                         if (match(ProductName, new string[] { "Olej", "Diesel", " ON" }) && csvTruck.quantity >= 0 && csvTruck.netto_price >= 0)
                         {
-                            System.Windows.Forms.MessageBox.Show(ProductName);
                             element.DieselL += (float)csvTruck.quantity;
                             element.DieselCost += (float)csvTruck.netto_price * currencyConverter.getRateOf(csvTruck.currency);
                         }

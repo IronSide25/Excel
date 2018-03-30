@@ -140,6 +140,7 @@ namespace WindowsFormsApp1
             foreach (string path in dirsList)
             {
                 ExcelType excelType = ExcelRecogniser.recognizeExcel(path);
+
                 if (excelType == ExcelType.ERROR)
                 {
                     cancelGeneration(excelReader);
@@ -154,17 +155,34 @@ namespace WindowsFormsApp1
 
                         return;
                     }
-                }if (excelType == ExcelType.EXTRA_INVOICE)
+                }
+                
+                excelProcessingProgress.PerformStep();
+            }
+
+            /*
+             * THIS IS A HORRIBLE WORKAROUND
+             * 
+             * my soul is dying right now
+             */
+            foreach (string path in dirsList)
+            {
+                ExcelType excelType = ExcelRecogniser.recognizeExcel(path);
+
+                if (excelType == ExcelType.EXTRA_INVOICE)
                 {
-                    if(!excelReader.extraInvoiceToExcel(path))
+                    if (!excelReader.extraInvoiceToExcel(path))
                     {
                         cancelGeneration(excelReader);
                     }
 
 
                 }
-                excelProcessingProgress.PerformStep();
             }
+
+            excelProcessingProgress.PerformStep();
+
+
 
             /*
             //thats an old code, it's here for reasons
